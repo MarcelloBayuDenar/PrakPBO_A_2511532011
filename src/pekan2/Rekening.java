@@ -3,20 +3,35 @@ package pekan2;
 import java.util.ArrayList;
 
 public class Rekening {
-	String nomorRekening;
-	String namaPemilik;
-	double saldo;
+	private String nomorRekening;
+	private String namaPemilik;
+	private double saldo;
+	private String pin;
 	
 	ArrayList<Transaksi> riwayatTransaksi;
 	
-	public Rekening(String nomor, String nama, double saldoAwal) {
+	public Rekening(String nomor, String nama, double saldoAwal, String pinAwal) {
 		nomorRekening = nomor;
 		namaPemilik = nama;
 		saldo = saldoAwal;
 		
+		if (pinAwal.length() == 6) {
+			this.pin = pinAwal;
+		} else {
+			System.out.println("Peringatan: Pin Harus 6 Digit! MenggunakanPIN default 123456");
+			this.pin = "123456";
+		}
+		
 		this.riwayatTransaksi = new ArrayList<>();
 		
 		System.out.println("Rekening atas nama " + namaPemilik + " berhasil dibuat.");
+	}
+	
+	public String getNomorRekening() {return nomorRekening;}
+	public String getNamaPemilik() {return namaPemilik;}
+	
+	public boolean otentikasi(String inputPin) {
+		return this.pin.equals(inputPin);
 	}
 	
 	public void setorTunai(double nominal) {

@@ -33,11 +33,14 @@ public class Main {
 					String no = input.nextLine().trim();
 					System.out.print("Masukkan Nama Pemilik: ");
 					String nama = input.nextLine().trim();
+					System.out.print("Buat PIN Rekening (6 Digit): ");
+					String pin = input.next();
 					System.out.print("Masukkan Saldo Awal: ");
 					double saldo = input.nextDouble();
+					
 					input.nextLine();
-
-					Rekening rekeningBaru = new Rekening(no, nama, saldo);
+					
+					Rekening rekeningBaru = new Rekening(no, nama, saldo, pin);
 					daftarRekening.add(rekeningBaru);
 					akunAktif = rekeningBaru;
 
@@ -59,10 +62,20 @@ public class Main {
 					if (akunAktif == null) {
 						System.out.println("Error: Anda belum membuka rekening!");
 					} else {
-						System.out.print("Masukkan nominal yang ingin anda tarik: Rp");
-						double nominal = input.nextDouble();
-						input.nextLine();
-						akunAktif.tarikTunai(nominal);
+						
+						System.out.print("Masukkan PIN Rekening Anda");
+						pin = input.next();
+						
+						if(akunAktif.otentikasi(pin) == false) {
+							System.out.println("Akses Ditolak: PIN yang Anda masukkan salah!");
+							return;
+						} else {
+							System.out.print("Masukkan nominal yang ingin anda tarik: Rp");
+							double nominal = input.nextDouble();
+							input.nextLine();
+							akunAktif.tarikTunai(nominal);
+						}
+						
 					}
 					break;
 
@@ -85,7 +98,7 @@ public class Main {
 
 						if (ditemukan != null) {
 							akunAktif = ditemukan;
-							System.out.println("Berhasil beralih ke rekening atas nama " + akunAktif.namaPemilik);
+							System.out.println("Berhasil beralih ke rekening atas nama " + akunAktif.getNamaPemilik());
 						} else {
 							System.out.println("Error: Nomor rekening tidak ditemukan!");
 						}
@@ -97,7 +110,15 @@ public class Main {
 						System.out.println("Error: Anda belum membuka rekening!");
 					
 					} else {
-						akunAktif.cetakMutasi();
+						System.out.print("Masukkan PIN Rekening Anda");
+						pin = input.next();
+						
+						if(akunAktif.otentikasi(pin) == false) {
+							System.out.println("Akses Ditolak: PIN yang Anda masukkan salah!");
+							return;
+						} else {
+							akunAktif.cetakMutasi();
+						}
 					}
 					
 					break;
