@@ -20,6 +20,7 @@ public class Main {
 			System.out.println("4. Cek Informasi Rekening");
 			System.out.println("5. Ganti Akun");
 			System.out.println("6 Cetak Mutasi(Riwayat)");
+			System.out.println("7 Simulasi Akhir Bulan ( khusus Tabungan )");
 			System.out.println("0. Keluar");
 			System.out.print("Pilih Menu: ");
 
@@ -33,20 +34,46 @@ public class Main {
 					String no = input.nextLine().trim();
 					System.out.print("Masukkan Nama Pemilik: ");
 					String nama = input.nextLine().trim();
-					System.out.print("Buat PIN Rekening (6 Digit): ");
-					String pin = input.next();
 					System.out.print("Masukkan Saldo Awal: ");
 					double saldo = input.nextDouble();
+					System.out.print("Buat PIN Rekening (6 Digit): ");
+					String pin = input.next();
 					
+					System.out.println();
+					
+					System.out.println("Ospi Produk");
+					System.out.println("1. Tabungan Umum");
+					System.out.println("2. Giro Bisnis");
+					System.out.print("Pilih Produk :");
+					int produk = input.nextInt();
 					input.nextLine();
 					
-					Rekening rekeningBaru = new Rekening(no, nama, saldo, pin);
-					daftarRekening.add(rekeningBaru);
-					akunAktif = rekeningBaru;
-
+					if ( produk == 1) {
+						System.out.print("Masukkan sukuBunga yang anda inginkan (1-100)% :");
+						double sukuBunga = input.nextDouble();
+						input.nextLine();
+						
+						RekeningTabungan rekeningBaru01 = new RekeningTabungan(no, nama, saldo, pin, sukuBunga);
+						daftarRekening.add(rekeningBaru01);
+						akunAktif = rekeningBaru01;
+						
+					} else if (produk == 2 ) {
+						
+						System.out.print("Masukkan Limit Pinjaman yang anda inginkan : Rp");
+						double limit = input.nextDouble();
+						input.nextLine();
+						
+						RekeningGiro rekeningBaru02 = new RekeningGiro(no, nama, saldo, pin, limit);
+						daftarRekening.add(rekeningBaru02);
+						akunAktif = rekeningBaru02;
+						
+					}
+					
+					System.out.println();
 					System.out.println("Rekening berhasil dibuat dan dijadikan akun aktif!");
+					
 					break;
-
+					
 				case 2:
 					if (akunAktif == null) {
 						System.out.println("Error: Mohon maaf, Anda belum memiliki nomor rekening!");
@@ -88,6 +115,7 @@ public class Main {
 					break;
 
 				case 5:
+					
 					if (daftarRekening.isEmpty()) {
 						System.out.println("Error: Belum ada rekening yang terdaftar!");
 					} else {
@@ -122,7 +150,25 @@ public class Main {
 					}
 					
 					break;
-
+				
+				case 7:
+					if (akunAktif == null) {
+						System.out.println("Error: Anda belum membuka rekening!");
+						
+					} 
+					
+					if (akunAktif instanceof RekeningTabungan) {
+						RekeningTabungan rekening = (RekeningTabungan) akunAktif;
+						
+						rekening.tambahBungaAkhirBulan();
+						
+					} else {
+						System.out.println("Gagal: Fitur bunga akhir hanya berlaku untuk rekening tabungan umum");
+					}
+					
+					break;
+					
+					
 				case 0:
 					isRunning = false;
 					System.out.println("Sistem ditutup, Terima Kasih!");

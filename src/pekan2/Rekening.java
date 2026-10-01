@@ -5,10 +5,10 @@ import java.util.ArrayList;
 public class Rekening {
 	private String nomorRekening;
 	private String namaPemilik;
-	private double saldo;
 	private String pin;
 	
-	ArrayList<Transaksi> riwayatTransaksi;
+	protected double saldo;
+	protected ArrayList<Transaksi> riwayatTransaksi;
 	
 	public Rekening(String nomor, String nama, double saldoAwal, String pinAwal) {
 		nomorRekening = nomor;
