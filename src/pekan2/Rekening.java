@@ -57,28 +57,28 @@ public class Rekening {
 		System.out.println("--- INFO REKENING ---");
 	}
 	
-	public void tarikTunai(double nominal) {
-		if (saldo == 0) {
-			System.out.println("Anda Tidak memiliki saldo di rekening anda");
-			return;
+	public boolean tarikTunai(double nominal) {
+		if (nominal <= 0) {
+			System.out.println("Gagal: Nominal tarik harus lebi dari 0!");
+			return false;
 		} 
 		
-		if (nominal > saldo) {
+		else if (nominal > saldo) {
 			System.out.println("Transaksi Gagal: Saldo tidak mencukupi. Saldo Anda: Rp " + saldo);
-			return;
+			return false;
 		}
 		
-		if (nominal < 10.000 ) {
-			System.out.println("Transaksi Gagal: Minimal nominal Penarikan Rp 10.000 ");
-			return;
+		else  {
+			saldo -= nominal;
+			
+			String idTrx = "TRX-T-" + System.currentTimeMillis();
+			riwayatTransaksi.add(new Transaksi(idTrx, "Debit", nominal));
+			
+			System.out.println("Transaksi anda berhasil. Sisa Saldo anda sekarang : Rp " + saldo);
+			return true;
 		}
 		
-		String idTrx = "TRX-T-" + System.currentTimeMillis();
-		Transaksi trxBaru = new Transaksi(idTrx, "Debit", nominal);
-		riwayatTransaksi.add(trxBaru);
 		
-		saldo -= nominal;
-		System.out.println("Transaksi anda berhasil. Sisa Saldo anda sekarang : Rp " + saldo);
 	}
 	
 	public static Rekening gantiAkun(ArrayList<Rekening> daftarRekening, String noRek) {
@@ -104,6 +104,22 @@ public class Rekening {
 		}
 		return null;
 		
+	}
+	
+	public void transfer(Rekening Tujuan, double nominal, String pinInput) {
+		if (this.otentikasi(pinInput) == false) {
+			
+			System.out.println("Pin yang anda masukkan salah");
+			return;
+			
+		} else {
+			
+			boolean suksesTarik = this.tarikTunai(nominal);
+			
+			if (suksesTarik == true ) {
+				Tujuan.setorTunai(nominal);
+			}
+		}
 	}
 }
 

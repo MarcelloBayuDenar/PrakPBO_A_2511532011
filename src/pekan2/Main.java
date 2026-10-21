@@ -8,7 +8,9 @@ public class Main {
 		Scanner input = new Scanner(System.in);
 		ArrayList<Rekening> daftarRekening = new ArrayList<>();
 		Rekening akunAktif = null;
+		Rekening akunTujuan = null;
 		boolean isRunning = true;
+		double nominalTf;
 
 		System.out.println("=== SISTEM PERBANKAN MINI ===");
 
@@ -21,6 +23,7 @@ public class Main {
 			System.out.println("5. Ganti Akun");
 			System.out.println("6 Cetak Mutasi(Riwayat)");
 			System.out.println("7 Simulasi Akhir Bulan ( khusus Tabungan )");
+			System.out.println("8 Transfer ke Rekening Lain");
 			System.out.println("0. Keluar");
 			System.out.print("Pilih Menu: ");
 
@@ -164,6 +167,37 @@ public class Main {
 						
 					} else {
 						System.out.println("Gagal: Fitur bunga akhir hanya berlaku untuk rekening tabungan umum");
+					}
+					
+					break;
+					
+				case 8:
+					
+					
+					if (akunAktif == null) {
+						
+						System.out.println("Error: Anda belum membuka rekening!");
+						
+					} else {
+						System.out.print("Masukkan Nomor Rekening Tujuan anda :");
+						String rekTujuan = input.next();
+						
+						for ( Rekening r :daftarRekening) {
+							if(r.getNomorRekening().equals(rekTujuan)) {
+								
+								akunTujuan = r;
+								
+								System.out.print("Masukkan Nominal Transfer yang anda inginkan :");
+								nominalTf = input.nextDouble();
+								
+								System.out.print("Masukkan PIN Rekening Anda");
+								pin = input.next();
+								
+								akunAktif.transfer( akunTujuan, nominalTf, pin);
+								
+							} 
+						}
+						
 					}
 					
 					break;
