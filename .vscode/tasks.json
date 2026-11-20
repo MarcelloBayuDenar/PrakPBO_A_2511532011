@@ -1,0 +1,32 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compile Java project",
+            "type": "shell",
+            "command": "if (Test-Path bin) { Remove-Item -Recurse -Force bin }; New-Item -ItemType Directory bin | Out-Null; javac -d bin (Get-ChildItem src -Recurse -Filter '*.java').FullName",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": "$javac",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Run SelfCheck",
+            "type": "shell",
+            "command": "java -cp bin selfcheck.SelfCheck",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": "Compile Java project",
+            "dependsOrder": "sequence",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        }
+    ]
+}
